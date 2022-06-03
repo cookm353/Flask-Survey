@@ -36,8 +36,13 @@ def show_question(q_id):
         return redirect("/thanks")
         
     if not q_id.isnumeric():
+        flash("Error: Invalid question number")
         q_id = len(responses)
     elif int(q_id) > len(responses):
+        flash("Error: Please answer previous questions first")
+        q_id = len(responses)
+    elif int(q_id) < len(responses):
+        flash("Error: You've already answered that question")
         q_id = len(responses)
     else:
         q_id = int(q_id)
@@ -47,11 +52,12 @@ def show_question(q_id):
     
 @app.route("/answer", methods=["POST"])
 def submit_answer():
-    if "opt" not in request.form:
+    if not request.form.get("opt", None):
         flash("Error: Must select an option")
-    
-    choice = request.form["opt"]
-    responses.append(choice)
+    else:
+        choice = request.form["opt"]
+        responses.append(choice)
+        
     return redirect(f"/questions/{len(responses)}")
 
 @app.route("/thanks")
