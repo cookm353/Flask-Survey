@@ -68,13 +68,11 @@ def submit_answer():
         session['responses'] = responses
         
     print(responses)
-    # return redirect(f"/questions/{len(session['responses'])}")
     return redirect(f"/questions/{len(responses)}")
 
 @app.route("/thanks")
 def thanks():
     qa_bundle = zip(session["responses"], survey.questions)
-    # return render_template("thanks.html", responses=session['responses'], survey=survey)
     return render_template("thanks.html", qa_bundle=qa_bundle)
 
   
